@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-    <title>YouTube Video Summarizer</title>
+  <title>VidSumAI</title>
+  <style>
+    body { font-family: sans-serif; padding: 10px; width: 300px; }
+    button { width: 100%; margin-top: 10px; padding: 10px; }
+    textarea { width: 100%; height: 150px; margin-top: 10px; }
+  </style>
 </head>
 <body>
-    <h2>Get AI Video Sum</h2>
-    <button id="summarize">Transcript and Sum</button>
-    <p id="result">Sum will be here!</p>
-    <script src="popup.js"></script>
+  <h3>🎥 VidSumAI</h3>
+  <button id="summarize">Transcribe & Summarize</button>
+  <textarea id="result" readonly placeholder="AI Summary will appear here..."></textarea>
+  <script src="popup.js"></script>
 </body>
 </html>

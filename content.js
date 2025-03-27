@@ -1,19 +1,29 @@
-async function getYouTubeAudio() {
-  let videoId = new URLSearchParams(window.location.search).get("v");
-
-  if (!videoId) {
-      console.error("No Video ID!");
-      return;
+(async () => {
+  const video = document.querySelector("video");
+  if (!video) {
+    console.error("Video not found!");
+    return;
   }
 
-  let audioUrl = `https://www.y2mate.com/youtube/${videoId}`;
+  const stream = video.captureStream();
+  const recorder = new MediaRecorder(stream);
+  const chunks = [];
 
-  let response = await fetch(audioUrl);
-  let audioBlob = await response.blob();
+  recorder.ondataavailable = (e) => chunks.push(e.data);
 
-  chrome.storage.local.set({ "audioBlob": audioBlob }, () => {
-      console.log("Voice file saved");
-  });
-}
+  recorder.onstop = () => {
+    const blob = new Blob(chunks, { type: "audio/webm" });
+    chrome.storage.local.set({ audioBlob: blob }, () => {
+      console.log("Audio saved to chrome.storage");
+    });
+  };
 
-getYouTubeAudio();
+  recorder.start();
+  console.log("Recording started...");
+
+  // 20 saniye kayıt yap (isteğe bağlı)
+  setTimeout(() => {
+    recorder.stop();
+    console.log("Recording stopped.");
+  }, 20000);
+})();
